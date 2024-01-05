@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Marketing App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: -20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        select,
+        input {
+            padding: 8px;
+            margin-bottom: 15px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .email-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        p {
+            margin: 5px 0;
+            color: #555;
+        }
+    </style>
+    <script>
+        function toggleBlogTitleField() {
+            var mailType = document.getElementById('mail_type').value;
+            var campaignGoal = document.getElementById('campaign_goal').value;
+            var blogTitleField = document.getElementById('blog_title_field');
+
+            if (mailType === 'blog' && campaignGoal === 'new_blog') {
+                blogTitleField.style.display = 'block';
+            } else {
+                blogTitleField.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Email Marketing App</h1>
+
+    <form method="post" action="{% url 'index' %}" oninput="toggleBlogTitleField()">
+        {% csrf_token %}
+        <label for="mail_type">
+            Mail Type:
+            <select id="mail_type" name="mail_type" required>
+                <option value="e-commerce">E-Commerce</option>
+                <option value="people">People</option>
+                <option value="blog">Blog</option>
+                <!-- Add more options as needed -->
+            </select>
+        </label>
+
+        <label for="campaign_goal">
+            Campaign Goal:
+            <select id="campaign_goal" name="campaign_goal" required>
+                <option value="convince_to_buy">Convince to Buy</option>
+                <option value="welcome_new_user">Welcome New User</option>
+                <option value="congratulate_on_purchase">Congratulate on Purchase</option>
+                <option value="new_blog">New Blog</option>
+                <!-- Add more options as needed -->
+            </select>
+        </label>
+
+        <div id="blog_title_field" style="display: none;">
+            <label for="blog_title">
+                Blog Title:
+                <input type="text" name="blog_title">
+            </label>
+        </div>
+
+        <label for="website_url">
+            Website URL (optional):
+            <input type="text" name="website_url">
+        </label>
+
+        <button type="submit">Generate Emails</button>
+    </form>
+
+    {% if email_contents %}
+        <h2>Recommended Email Contents:</h2>
+        {% for i, content in email_contents %}
+            <div class="email-box">
+                <p>Email {{ i }}:</p>
+                <p>{{ content.1 }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+    {% if company_description %}
+        <p>Company Description: {{ company_description }}</p>
+    {% endif %}
+</
